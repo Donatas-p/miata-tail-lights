@@ -51,12 +51,12 @@ function App() {
           options={{ 
             title: 'Options',
             headerStyle: {
-              backgroundColor: '#D0000E',
+              backgroundColor: '#282828',
             },
-            headerTintColor: '#fff',
+            headerTintColor: '#cc241d',
             headerTitleStyle: {
               fontWeight: '100',
-            },
+            }
           }} />
         <Stack.Screen name="SingleState" component={SingleState} />
         <Stack.Screen name="Animation" component={Animation} />
@@ -70,18 +70,19 @@ function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#D0000E',
+    backgroundColor: '#504945',
     alignItems: 'center',
     justifyContent: 'center',
     textAlignVertical: 'top',
     minHeight: "100%"
   },
   h1: {
-    fontSize: 25
+    fontSize: 25,
+    color: '#cc241d'
   },
   appButtonContainer: {
       elevation: 20,
-      backgroundColor: "#009688",
+      backgroundColor: "#fb4934",
       borderRadius: 10,
       paddingVertical: 10,
       paddingHorizontal: 12,
@@ -89,7 +90,7 @@ const styles = StyleSheet.create({
   },
   appButtonText: {
       fontSize: 18,
-      color: "#fff",
+      color: "#504945",
       fontWeight: "bold",
       alignSelf: "center",
       textTransform: "uppercase"
