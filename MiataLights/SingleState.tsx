@@ -2,33 +2,10 @@ import React, { useState } from 'react';
 import { SafeAreaView, Image, StyleSheet, Dimensions, View, Text, TouchableOpacity } from 'react-native';
 import ImageZoom from 'react-native-image-pan-zoom';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-
-const AppButton = ({ onPress, title }) => (
-  <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>
-    <Text style={styles.appButtonText}>{title}</Text>
-  </TouchableOpacity>
-);
-
-function HomeScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Home!</Text>
-    </View>
-  );
-}
-
-function SettingsScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Settings!</Text>
-    </View>
-  );
-}
-
-const Tab = createBottomTabNavigator();
+import LedPoint from "./LedPoint";
 
 export const SingleState = () => {
-
+  const [state, setState] = useState({ pressed: 0});
   function save() {
     alert("This will be save to presets function someday");
   }
@@ -37,8 +14,16 @@ export const SingleState = () => {
     alert("This will be undo someday");
   }
 
+  
+  function _onPress() {
+    state.pressed ? setState(prevState => { return { ...prevState, pressed:0 }}) : setState(prevState => { return { ...prevState, pressed: 1}});
+    
+    console.log("Clicked point");
+  }
+  
   return (
-    <SafeAreaView style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <SafeAreaView style={{ flex: 1, alignItems: 'center', justifyContent: 'center', 
+    backgroundColor: '#282828' }}>
          <ImageZoom cropWidth={Dimensions.get('window').width}
                        cropHeight={Dimensions.get('window').height}
                        imageWidth={200}
@@ -47,6 +32,7 @@ export const SingleState = () => {
                 style={styles.lamp}
                 source={require('./assets/Lamp.png')}
                 />
+            <LedPoint onPress={_onPress} top={100} left={100} pressed={state.pressed} />
         </ImageZoom>
         <TouchableOpacity onPress={save} style={[styles.appButtonContainer, styles.undo]}>
           <Text style={styles.appButtonText}>{"Undo"}</Text>

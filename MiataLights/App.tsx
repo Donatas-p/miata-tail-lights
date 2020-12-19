@@ -58,7 +58,16 @@ function App() {
               fontWeight: '100',
             }
           }} />
-        <Stack.Screen name="SingleState" component={SingleState} />
+        <Stack.Screen name="SingleState" component={SingleState} 
+                  options={{ 
+                    headerStyle: {
+                      backgroundColor: '#282828',
+                    },
+                    headerTintColor: '#cc241d',
+                    headerTitleStyle: {
+                      fontWeight: '100',
+                    }
+                  }}/>
         <Stack.Screen name="Animation" component={Animation} />
         <Stack.Screen name="Presets" component={Presets} />
       </Stack.Navigator>
