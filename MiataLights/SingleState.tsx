@@ -4,8 +4,10 @@ import ImageZoom from 'react-native-image-pan-zoom';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import LedPoint from "./LedPoint";
 
+const initialLedState = { ledState : [[121, 10, 0], [112, 20, 0], [105, 32, 0], [101, 46, 0], [98, 60, 0], [94, 76, 0], [92, 90, 0], [91, 105, 0]]};
 export const SingleState = () => {
-  const [state, setState] = useState({ pressed: 0});
+  const ledState = initialLedState;
+  const [state, setState] = useState(ledState);
   function save() {
     alert("This will be save to presets function someday");
   }
@@ -15,25 +17,44 @@ export const SingleState = () => {
   }
 
   
-  function _onPress() {
-    state.pressed ? setState(prevState => { return { ...prevState, pressed:0 }}) : setState(prevState => { return { ...prevState, pressed: 1}});
+  function _onPress(index) {
+    const newLedState = [...state.ledState];
     
+    const singularLedState = newLedState[index];
+    if (singularLedState[2] == 0) {
+      singularLedState[2] = 1;
+    } else {
+      singularLedState[2] = 0;
+    }
+    newLedState[index] = singularLedState;
+    setState(prevState => { return { ...prevState, newLedState}});
     console.log("Clicked point");
   }
-  
+
+  function resetArray() {
+    console.log("clear");
+    setState({ ...initialLedState });
+    console.log(initialLedState);
+    
+  }
   return (
     <SafeAreaView style={{ flex: 1, alignItems: 'center', justifyContent: 'center', 
     backgroundColor: '#282828' }}>
          <ImageZoom cropWidth={Dimensions.get('window').width}
                        cropHeight={Dimensions.get('window').height}
-                       imageWidth={200}
-                       imageHeight={200}>
+                       imageWidth={300}
+                       imageHeight={300}>
             <Image 
                 style={styles.lamp}
                 source={require('./assets/Lamp.png')}
                 />
-            <LedPoint onPress={_onPress} top={100} left={100} pressed={state.pressed} />
-        </ImageZoom>
+                {state.ledState.map((item, index) => (
+                  <LedPoint key={index} onPress={() => _onPress(index)} top={item[0]} left={item[1]} pressed={item[2]} />
+                ))}
+          </ImageZoom>
+        <TouchableOpacity onPress={resetArray} style={[styles.appButtonContainer, styles.reset]}>
+          <Text style={styles.appButtonText}>{"Reset"}</Text>
+        </TouchableOpacity>
         <TouchableOpacity onPress={save} style={[styles.appButtonContainer, styles.undo]}>
           <Text style={styles.appButtonText}>{"Undo"}</Text>
         </TouchableOpacity>
@@ -69,6 +90,9 @@ const styles = StyleSheet.create({
     },
     undo: {
         left: '10%',
+    },
+    reset: {
+      alignSelf: 'center'
     },
     appButtonText: {
         position: "absolute",
