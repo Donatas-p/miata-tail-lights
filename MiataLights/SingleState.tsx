@@ -17,7 +17,7 @@ export const SingleState = () => {
   }
 
   
-  function _onPress(index) {
+  function _onPress(index: number) {
     const newLedState = [...state.ledState];
     
     const singularLedState = newLedState[index];
@@ -48,7 +48,7 @@ export const SingleState = () => {
                 style={styles.lamp}
                 source={require('./assets/Lamp.png')}
                 />
-                {state.ledState.map((item, index) => (
+                {state.ledState.map((item: Array<number>, index: number) => (
                   <LedPoint key={index} onPress={() => _onPress(index)} top={item[0]} left={item[1]} pressed={item[2]} />
                 ))}
           </ImageZoom>
