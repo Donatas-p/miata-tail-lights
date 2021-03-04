@@ -6,7 +6,7 @@ import LedPoint from "./LedPoint";
 
 const initialLedState = { ledState : [[121, 10, 0], [112, 20, 0], [105, 32, 0], [101, 46, 0], [98, 60, 0], [94, 76, 0], [92, 90, 0], [91, 105, 0]]};
 export const SingleState = () => {
-  const ledState = initialLedState;
+  let ledState = JSON.parse(JSON.stringify(initialLedState));
   const [state, setState] = useState(ledState);
   function save() {
     alert("This will be save to presets function someday");
@@ -33,7 +33,7 @@ export const SingleState = () => {
 
   function resetArray() {
     console.log("clear");
-    setState({ ...initialLedState });
+    setState(JSON.parse(JSON.stringify(initialLedState)));
     console.log(initialLedState);
     
   }

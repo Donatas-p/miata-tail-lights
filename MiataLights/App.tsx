@@ -4,6 +4,7 @@ import { StyleSheet, Text, View, Button, SafeAreaView, TouchableOpacity } from '
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { SingleState } from './SingleState';
+import { NormalMode } from './NormalMode';
 import { Animation } from './Animation';
 import { Presets } from './Presets';
 
@@ -15,18 +16,11 @@ const AppButton = ({ onPress, title }) => (
 
 function HomeScreen({ navigation }) {
 
-  const [state, setState] = useState({ text: "This miata light app thing"});
-
-  const text = state.text;
-  
-  function changeText(string: string) {
-    console.log(string);
-    setState(prevState => { return { ...prevState, text: string}});
-  };
-
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.h1}>{text}</Text>
+      <AppButton title="Normal Mode" 
+            onPress={() => navigation.navigate(NormalMode)} />
+
       <AppButton title="Single state" 
               onPress={() => navigation.navigate(SingleState)} />
               
@@ -68,6 +62,7 @@ function App() {
                       fontWeight: '100',
                     }
                   }}/>
+        <Stack.Screen name="NormalMode" component={NormalMode} />
         <Stack.Screen name="Animation" component={Animation} />
         <Stack.Screen name="Presets" component={Presets} />
       </Stack.Navigator>
@@ -90,8 +85,7 @@ const styles = StyleSheet.create({
     color: '#cc241d'
   },
   appButtonContainer: {
-      elevation: 20,
-      backgroundColor: "#fb4934",
+      backgroundColor: "#504945",
       borderRadius: 10,
       paddingVertical: 10,
       paddingHorizontal: 12,
@@ -99,7 +93,7 @@ const styles = StyleSheet.create({
   },
   appButtonText: {
       fontSize: 18,
-      color: "#504945",
+      color: "#fb4934",
       fontWeight: "bold",
       alignSelf: "center",
       textTransform: "uppercase"
