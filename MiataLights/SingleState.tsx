@@ -1,42 +1,90 @@
-import React, { useState } from 'react';
+import React, { useState, useReducer } from 'react';
+
+import { createUndoRedo } from "react-undo-redo";
 import { SafeAreaView, Image, StyleSheet, Dimensions, View, Text, TouchableOpacity } from 'react-native';
 import ImageZoom from 'react-native-image-pan-zoom';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import LedPoint from "./LedPoint";
 
-const initialLedState = { ledState : [[121, 10, 0], [112, 20, 0], [105, 32, 0], [101, 46, 0], [98, 60, 0], [94, 76, 0], [92, 90, 0], [91, 105, 0]]};
-export const SingleState = () => {
-  let ledState = JSON.parse(JSON.stringify(initialLedState));
-  const [state, setState] = useState(ledState);
-  function save() {
-    alert("This will be save to presets function someday");
-  }
-  
-  function undo() {
-    alert("This will be undo someday");
-  }
+type LedState = {
+    leds: number[][],
+    history: Array<number>
+}
 
-  
-  function _onPress(index: number) {
-    const newLedState = [...state.ledState];
-    
-    const singularLedState = newLedState[index];
-    if (singularLedState[2] == 0) {
-      singularLedState[2] = 1;
-    } else {
-      singularLedState[2] = 0;
+type reducerAction = {
+    index?: number,
+    type: string
+}
+
+function reducer(state: LedState, action: reducerAction) {
+    switch (action.type) {
+        case "click":
+            console.log(state);
+            if (typeof action.index !== 'undefined') {
+                let index = action.index;
+                let singleLed = state.leds[index];
+                if (singleLed[2] == 0) {
+                    singleLed[2] = 1;
+                } else {
+                    singleLed[2] = 0;
+                }
+                state.leds[index] = singleLed;
+                state.history.push(index);
+            }
+            return {
+                leds: [...state.leds],
+                history: [...state.history]
+            };
+        case "reset":
+            return {
+                leds: generateLedArray(),
+                history: [...state.history]
+            }
+        case "undo":
+            let undoLed = state.history.pop()
+            if (typeof(undoLed) !== 'undefined') {
+                let undidLed = state.leds[undoLed]
+                if (undidLed[2] == 0) {
+                    undidLed[2] = 1;
+                } else {
+                    undidLed[2] = 0;
+                }
+                state.leds[undoLed] = undidLed;
+            }
+            return {
+                leds: [...state.leds],
+                history: [...state.history]
+            };
+        default:
+            return state;
     }
-    newLedState[index] = singularLedState;
-    setState(prevState => { return { ...prevState, newLedState}});
-    console.log("Clicked point");
-  }
+}
 
-  function resetArray() {
-    console.log("clear");
-    setState(JSON.parse(JSON.stringify(initialLedState)));
-    console.log(initialLedState);
+let generateLedArray = () => {
+    var ledAmount= {
+        length: 28,
+        height: 10
+    }
+    var ledArray = [];
+    for (var i = 0; i < ledAmount.height; i++ ) {
+        for (var j = 0; j < ledAmount.length; j++) {
+            ledArray.push([i*10+100, j*10+10, 0])
+        }
+    }
+    return ledArray
     
-  }
+}
+
+const initialLedState = { ledState : generateLedArray() };
+
+export const SingleState = () => {
+
+    const [ { leds, history }, dispatch] = useReducer(reducer, { leds: generateLedArray(), history: []} )
+
+    function save() {
+        alert("This will be save to presets function someday")
+    }
+
   return (
     <SafeAreaView style={{ flex: 1, alignItems: 'center', justifyContent: 'center', 
     backgroundColor: '#282828' }}>
@@ -48,17 +96,17 @@ export const SingleState = () => {
                 style={styles.lamp}
                 source={require('./assets/Lamp.png')}
                 />
-                {state.ledState.map((item: Array<number>, index: number) => (
-                  <LedPoint key={index} onPress={() => _onPress(index)} top={item[0]} left={item[1]} pressed={item[2]} />
+                {leds.map((item: Array<number>, index: number) => (
+                  <LedPoint key={index} onPress={() => dispatch({ index: index, type: 'click'})} top={item[0]} left={item[1]} pressed={item[2]} />
                 ))}
           </ImageZoom>
-        <TouchableOpacity onPress={resetArray} style={[styles.appButtonContainer, styles.reset]}>
+        <TouchableOpacity onPress={() => dispatch({type: 'reset'})} style={[styles.appButtonContainer, styles.reset]}>
           <Text style={styles.appButtonText}>{"Reset"}</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={save} style={[styles.appButtonContainer, styles.undo]}>
+        <TouchableOpacity onPress={() => dispatch({type: 'undo'})} style={[styles.appButtonContainer, styles.undo]}>
           <Text style={styles.appButtonText}>{"Undo"}</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={undo} style={[styles.appButtonContainer, styles.save]}>
+        <TouchableOpacity onPress={save} style={[styles.appButtonContainer, styles.save]}>
           <Text style={styles.appButtonText}>{"Save"}</Text>
         </TouchableOpacity>
     </SafeAreaView>
