@@ -38,7 +38,7 @@ function reducer(state: LedState, action: reducerAction) {
         case "reset":
             return {
                 leds: generateLedArray(),
-                history: [...state.history]
+                history: []
             }
         case "undo":
             let undoLed = state.history.pop()
