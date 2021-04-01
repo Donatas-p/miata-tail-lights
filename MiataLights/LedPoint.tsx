@@ -14,7 +14,7 @@ const LedPoint: React.FC<Props> = ({onPress, top, left, pressed}) => (
         height: 7, 
         width: 7,
         borderRadius: 5,
-        backgroundColor: 'rgba(255,0,0,0.3)',
+        backgroundColor: 'rgba(255,0,0,0.25)',
         position: 'absolute',
         top: top,
         left: left
