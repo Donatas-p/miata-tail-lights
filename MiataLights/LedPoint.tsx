@@ -6,20 +6,23 @@ interface Props {
     top: number;
     left: number;
     pressed: number;
+    r: number;
+    g: number;
+    b: number;
 }
 
-const LedPoint: React.FC<Props> = ({onPress, top, left, pressed}) => (
+const LedPoint: React.FC<Props> = ({onPress, top, left, pressed, r, g, b}) => (
     <TouchableOpacity onPress={onPress} activeOpacity={.1} 
     style={[{
         height: 7, 
         width: 7,
         borderRadius: 5,
-        backgroundColor: 'rgba(255,0,0,0.25)',
+        backgroundColor: `rgba(${r},${g},${b},0.25)`,
         position: 'absolute',
         top: top,
         left: left
         },
-        pressed ? { backgroundColor: 'rgba(255,0,0,1)'} : {}
+        pressed ? { backgroundColor: `rgba(${r},${g},${b},1)`} : {}
     ]} />
 )
 
