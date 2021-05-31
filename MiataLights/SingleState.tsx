@@ -88,9 +88,8 @@ let hexToRGB = (hex : any) => {
 
 const storeData = async (value: Object, name: string) => {
     try {
-        alert(name);
         const jsonValue = JSON.stringify(value)
-        await AsyncStorage.setItem('@storage_Key', jsonValue)
+        await AsyncStorage.setItem(name, jsonValue)
     } catch (e) {
         console.error(e);
     }
@@ -104,10 +103,6 @@ export const SingleState = () => {
     const [presetName, setPresetName] = useState('');
     const [pickerColor, setPickerColor] = useState('#ff0000');
     
-    function save(name: string) {
-        storeData(leds, name);
-    }
-    console.log(leds);
   return (
     <SafeAreaView style={{ flex: 1, alignItems: 'center', justifyContent: 'center', 
     backgroundColor: '#282828' }}>
@@ -151,7 +146,7 @@ export const SingleState = () => {
                         placeholder = {'Enter Preset Name'}
                         onChangeText={presetName => setPresetName(presetName)}
                     />
-                    <TouchableOpacity onPress={() => {save(presetName), setSaveModalVisible(!saveModalVisible)}} style={[styles.appButtonContainer, styles.saveModal]}>
+                    <TouchableOpacity onPress={() => {storeData(leds,presetName), setSaveModalVisible(!saveModalVisible)}} style={[styles.appButtonContainer, styles.saveModal]}>
                     <Text style={styles.appButtonText}>{"Save"}</Text>
                     </TouchableOpacity>
                 </View>

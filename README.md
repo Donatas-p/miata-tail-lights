@@ -5,8 +5,8 @@ Repo for my React native/Node project to run bluetooth miata rear lights.
 ## Issues to solve
 
 - Storage
-  - Check if saving works
-  - Display saved Presets
+  - ~~Check if saving works~~
+  - ~~Display saved Presets~~
   - Load saved Presets
   - Edit saved Presets
 - Make sending step

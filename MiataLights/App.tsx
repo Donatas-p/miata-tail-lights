@@ -64,7 +64,16 @@ function App() {
                   }}/>
         <Stack.Screen name="NormalMode" component={NormalMode} />
         <Stack.Screen name="Animation" component={Animation} />
-        <Stack.Screen name="Presets" component={Presets} />
+        <Stack.Screen name="Presets" component={Presets}
+            options={{ 
+                headerStyle: {
+                backgroundColor: '#282828',
+                },
+                headerTintColor: '#cc241d',
+                headerTitleStyle: {
+                fontWeight: '100',
+                }
+            }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
