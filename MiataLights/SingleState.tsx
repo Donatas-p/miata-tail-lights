@@ -1,6 +1,6 @@
 import React, { useState, useReducer } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { SafeAreaView, Image, StyleSheet, Dimensions, View, Text, TouchableOpacity, Modal } from 'react-native';
+import { SafeAreaView, Image, StyleSheet, Dimensions, View, Text, TouchableOpacity, Modal, TextInput } from 'react-native';
 import ImageZoom from 'react-native-image-pan-zoom';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import LedPoint from "./LedPoint";
@@ -86,8 +86,9 @@ let hexToRGB = (hex : any) => {
     };
 }
 
-const storeData = async (value: Object) => {
+const storeData = async (value: Object, name: string) => {
     try {
+        alert(name);
         const jsonValue = JSON.stringify(value)
         await AsyncStorage.setItem('@storage_Key', jsonValue)
     } catch (e) {
@@ -99,11 +100,12 @@ export const SingleState = () => {
 
     const [ { leds, history }, dispatch] = useReducer(reducer, { leds: generateLedArray(), history: []} )
     const [modalVisible, setModalVisible] = useState(false);
+    const [saveModalVisible, setSaveModalVisible] = useState(false);
+    const [presetName, setPresetName] = useState('');
     const [pickerColor, setPickerColor] = useState('#ff0000');
     
-    function save() {
-        storeData(leds)
-        alert("This will be save to presets function someday")
+    function save(name: string) {
+        storeData(leds, name);
     }
     console.log(leds);
   return (
@@ -135,8 +137,28 @@ export const SingleState = () => {
         <TouchableOpacity onPress={() => dispatch({type: 'undo'})} style={[styles.appButtonContainer, styles.undo]}>
           <Text style={styles.appButtonText}>{`Undo`}</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={save} style={[styles.appButtonContainer, styles.save]}>
-          <Text style={styles.appButtonText}>{"Save"}</Text>
+        <Modal
+            animationType="slide"
+            transparent={true}
+            visible={saveModalVisible}
+            onRequestClose={() => {
+            setSaveModalVisible(!saveModalVisible);
+            }}
+        >
+            <View style={styles.centeredView}>
+                <View style={styles.saveModalView}>
+                    <TextInput
+                        placeholder = {'Enter Preset Name'}
+                        onChangeText={presetName => setPresetName(presetName)}
+                    />
+                    <TouchableOpacity onPress={() => {save(presetName), setSaveModalVisible(!saveModalVisible)}} style={[styles.appButtonContainer, styles.saveModal]}>
+                    <Text style={styles.appButtonText}>{"Save"}</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        </Modal>
+        <TouchableOpacity onPress={() => setSaveModalVisible(true)} style={[styles.appButtonContainer, styles.save]}>
+                    <Text style={styles.appButtonText}>{"Save"}</Text>
         </TouchableOpacity>
         <Modal
             animationType="slide"
@@ -190,6 +212,9 @@ const styles = StyleSheet.create({
     save: {
         right: '10%',
     },
+    saveModal: {
+        bottom: '5%',
+    },
     undo: {
         left: '10%',
     },
@@ -229,6 +254,25 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 4,
         elevation: 5
+    },
+    
+    saveModalView: {
+        margin: 0,
+        width: 300,
+        height: 200,
+        backgroundColor: "gray",
+        borderRadius: 20,
+        padding: 35,
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 0,
+          height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     button: {
         borderRadius: 20,
