@@ -3,10 +3,10 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, Button, SafeAreaView, TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { SingleState } from './SingleState';
+import { SingleState } from './SingleState/SingleState';
 import { NormalMode } from './NormalMode';
 import { Animation } from './Animation';
-import { Presets } from './Presets';
+import { Presets } from './Presets/Presets';
 
 const AppButton = ({ onPress, title }) => (
   <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>

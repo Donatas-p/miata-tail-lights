@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SafeAreaView, Image, StyleSheet, Dimensions, View, Text, TouchableOpacity, Modal, TextInput } from 'react-native';
 import ImageZoom from 'react-native-image-pan-zoom';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import LedPoint from "./LedPoint";
+import LedPoint from "../LedPoint";
 import { ColorPicker } from 'react-native-color-picker';
 
 type LedState = {
@@ -62,18 +62,24 @@ function reducer(state: LedState, action: reducerAction) {
     }
 }
 
-let generateLedArray = () => {
-    var ledAmount= {
-        length: 28,
-        height: 10
-    }
-    var ledArray = [];
-    for (var i = 0; i < ledAmount.height; i++ ) {
-        for (var j = 0; j < ledAmount.length; j++) {
-            ledArray.push([i*10+100, j*10+10, 0, { r:255,g:0,b:0}])
+let generateLedArray = (params) => {
+    console.log(params.name)
+    if(typeof params.name !== 'undefined') {
+        let storedData = getData(params.name)
+        return storedData[1]
+    } else {
+        var ledAmount= {
+            length: 28,
+            height: 10
         }
+        var ledArray = [];
+        for (var i = 0; i < ledAmount.height; i++ ) {
+            for (var j = 0; j < ledAmount.length; j++) {
+                ledArray.push([i*10+100, j*10+10, 0, { r:255,g:0,b:0}])
+            }
+        }
+        return ledArray
     }
-    return ledArray
     
 }
 
@@ -88,16 +94,29 @@ let hexToRGB = (hex : any) => {
 
 const storeData = async (value: Object, name: string) => {
     try {
-        const jsonValue = JSON.stringify(value)
+        var saveData = ['SingleState', value]
+        const jsonValue = JSON.stringify(saveData)
         await AsyncStorage.setItem(name, jsonValue)
     } catch (e) {
         console.error(e);
     }
 }
 
-export const SingleState = () => {
 
-    const [ { leds, history }, dispatch] = useReducer(reducer, { leds: generateLedArray(), history: []} )
+const getData = async (name: string) => {
+    try {
+        const value = await AsyncStorage.getItem(name);
+        if(value !== null) {
+           return value;
+        }
+      } catch(e) {
+        console.error(e);
+      }
+}
+
+export const SingleState = ({navigation, route}) => {
+
+    const [ { leds, history }, dispatch] = useReducer(reducer, { leds: generateLedArray(route), history: []} )
     const [modalVisible, setModalVisible] = useState(false);
     const [saveModalVisible, setSaveModalVisible] = useState(false);
     const [presetName, setPresetName] = useState('');
@@ -112,7 +131,7 @@ export const SingleState = () => {
                        imageHeight={300}>
             <Image 
                 style={styles.lamp}
-                source={require('./assets/Lamp.png')}
+                source={require('../assets/Lamp.png')}
                 />
                 {leds.map((item: Array<any>, index: number) => (
                   <LedPoint 
