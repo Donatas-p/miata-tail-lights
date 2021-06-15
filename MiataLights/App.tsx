@@ -1,14 +1,21 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Button, SafeAreaView, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Button, SafeAreaView, TouchableOpacity, GestureResponderEvent} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator, StackNavigationProp } from '@react-navigation/stack';
 import { SingleState } from './SingleState/SingleState';
 import { NormalMode } from './NormalMode';
 import { Animation } from './Animation';
 import { Presets } from './Presets/Presets';
 
-const AppButton = ({ onPress, title }) => (
+const Stack = createStackNavigator();
+
+type Props = {
+    onPress: (event: GestureResponderEvent) => void,
+    title: string
+}
+
+const AppButton = ({ onPress , title } : Props) => (
   <TouchableOpacity onPress={onPress} style={styles.appButtonContainer}>
     <Text style={styles.appButtonText}>{title}</Text>
   </TouchableOpacity>
@@ -35,7 +42,6 @@ function HomeScreen({ navigation }) {
   );
 }
 
-const Stack = createStackNavigator();
 console.log("App executed");
 function App() {
   return (

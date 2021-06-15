@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, SafeAreaView, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
+import { Text, View, SafeAreaView, StyleSheet, FlatList, TouchableOpacity, StyleProp, ViewStyle} from 'react-native';
 import { NavigationContainer, NavigationHelpersContext, NavigationRouteContext } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SingleState } from '../SingleState/SingleState';
@@ -15,7 +15,19 @@ export const Presets = ({ navigation }) => {
     }, []);
     
 
-    let renderItem = (styles, name:string) => {
+
+    const getData = async (name: string) => {
+        try {
+            const value = await AsyncStorage.getItem(name);
+            if(value !== null) {
+               return value;
+            }
+          } catch(e) {
+            console.error(e);
+          }
+    }
+
+    let renderItem = (styles : StyleProp<ViewStyle> , name:string) => {
         return (
           <TouchableOpacity
             style={styles}
@@ -28,9 +40,14 @@ export const Presets = ({ navigation }) => {
         );
     }
     
-    let navigate = (item : string) => {
-        navigation.navigate(SingleState, { storageKey: item })
-        console.log(item);
+    let navigate = async (item : string) => {
+        let storedData = await getData(item)
+        if (typeof storedData !== 'undefined') {
+            storedData = JSON.parse(storedData)
+            navigation.navigate(storedData[0], { data: storedData[1], savedName: item })
+        } else {
+            return false;
+        }
     }
 
 

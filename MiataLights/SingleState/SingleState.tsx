@@ -62,11 +62,9 @@ function reducer(state: LedState, action: reducerAction) {
     }
 }
 
-let generateLedArray = (params) => {
-    console.log(params.name)
-    if(typeof params.name !== 'undefined') {
-        let storedData = getData(params.name)
-        return storedData[1]
+let generateLedArray = (data) => {
+    if(typeof data !== 'undefined') {
+        return data
     } else {
         var ledAmount= {
             length: 28,
@@ -103,25 +101,15 @@ const storeData = async (value: Object, name: string) => {
 }
 
 
-const getData = async (name: string) => {
-    try {
-        const value = await AsyncStorage.getItem(name);
-        if(value !== null) {
-           return value;
-        }
-      } catch(e) {
-        console.error(e);
-      }
-}
+export const SingleState = ({route, navigation}) => {
+    var { data, savedName } = route.params
 
-export const SingleState = ({navigation, route}) => {
-
-    const [ { leds, history }, dispatch] = useReducer(reducer, { leds: generateLedArray(route), history: []} )
+    const [ { leds, history }, dispatch] = useReducer(reducer, { leds: generateLedArray(data), history: []} )
     const [modalVisible, setModalVisible] = useState(false);
     const [saveModalVisible, setSaveModalVisible] = useState(false);
-    const [presetName, setPresetName] = useState('');
+    const [presetName, setPresetName] = useState(() => {if (typeof savedName !== 'undefined') { return savedName } else { return '' }});
     const [pickerColor, setPickerColor] = useState('#ff0000');
-    
+
   return (
     <SafeAreaView style={{ flex: 1, alignItems: 'center', justifyContent: 'center', 
     backgroundColor: '#282828' }}>
@@ -163,6 +151,7 @@ export const SingleState = ({navigation, route}) => {
                 <View style={styles.saveModalView}>
                     <TextInput
                         placeholder = {'Enter Preset Name'}
+                        value={presetName}
                         onChangeText={presetName => setPresetName(presetName)}
                     />
                     <TouchableOpacity onPress={() => {storeData(leds,presetName), setSaveModalVisible(!saveModalVisible)}} style={[styles.appButtonContainer, styles.saveModal]}>
