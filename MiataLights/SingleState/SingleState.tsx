@@ -10,7 +10,7 @@ type LedState = {
     leds: Array<Array<any>>,
     history: Array<number>
 }
-  
+
 type reducerAction = {
     index?: number,
     color?: any,
@@ -62,8 +62,8 @@ function reducer(state: LedState, action: reducerAction) {
     }
 }
 
-let generateLedArray = (data) => {
-    if(typeof data !== 'undefined') {
+let generateLedArray = (data = null) => {
+    if(data !== null) {
         return data
     } else {
         var ledAmount= {
@@ -81,7 +81,7 @@ let generateLedArray = (data) => {
     
 }
 
-let hexToRGB = (hex : any) => {
+let sendToBluetooth  = (array : any) => {
     var m = hex.match(/^#?([\da-f]{2})([\da-f]{2})([\da-f]{2})$/i);
     return {
         r: parseInt(m[1], 16), 
@@ -102,7 +102,10 @@ const storeData = async (value: Object, name: string) => {
 
 
 export const SingleState = ({route, navigation}) => {
-    var { data, savedName } = route.params
+    console.log(route.params)
+    if(typeof route.params !== 'undefined'){
+        var { data, savedName } = route.params
+    }
 
     const [ { leds, history }, dispatch] = useReducer(reducer, { leds: generateLedArray(data), history: []} )
     const [modalVisible, setModalVisible] = useState(false);
@@ -152,6 +155,7 @@ export const SingleState = ({route, navigation}) => {
                     <TextInput
                         placeholder = {'Enter Preset Name'}
                         value={presetName}
+                        textAlign={'center'}
                         onChangeText={presetName => setPresetName(presetName)}
                     />
                     <TouchableOpacity onPress={() => {storeData(leds,presetName), setSaveModalVisible(!saveModalVisible)}} style={[styles.appButtonContainer, styles.saveModal]}>

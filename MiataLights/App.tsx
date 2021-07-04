@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, Button, SafeAreaView, TouchableOpacity, Gesture
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator, StackNavigationProp } from '@react-navigation/stack';
 import { SingleState } from './SingleState/SingleState';
-import { NormalMode } from './NormalMode';
+import { NormalMode } from './NormalMode/NormalMode';
 import { Animation } from './Animation';
 import { Presets } from './Presets/Presets';
 
@@ -68,7 +68,17 @@ function App() {
                       fontWeight: '100',
                     }
                   }}/>
-        <Stack.Screen name="NormalMode" component={NormalMode} />
+        <Stack.Screen name="NormalMode" component={NormalMode}
+        options={{ 
+            title: 'Lights',
+            headerStyle: {
+              backgroundColor: '#282828',
+            },
+            headerTintColor: '#cc241d',
+            headerTitleStyle: {
+              fontWeight: '100',
+            }
+          }} />
         <Stack.Screen name="Animation" component={Animation} />
         <Stack.Screen name="Presets" component={Presets}
             options={{ 
