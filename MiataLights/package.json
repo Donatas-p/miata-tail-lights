@@ -1,9 +1,8 @@
 {
-  "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "start": "react-native start",
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
     "web": "expo start --web",
     "eject": "expo eject"
   },
@@ -14,10 +13,13 @@
     "@react-navigation/native": "^5.8.10",
     "@react-navigation/stack": "^5.12.8",
     "expo": "~40.0.0",
+    "expo-splash-screen": "~0.8.0",
     "expo-status-bar": "~1.0.3",
+    "expo-updates": "~0.4.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-40.0.1.tar.gz",
+    "react-native": "~0.63.4",
+    "react-native-ble-plx": "^2.0.2",
     "react-native-cli": "^2.0.1",
     "react-native-color-picker": "^0.6.0",
     "react-native-gesture-handler": "~1.8.0",
@@ -26,14 +28,20 @@
     "react-native-reanimated": "~1.13.0",
     "react-native-safe-area-context": "3.1.9",
     "react-native-screens": "~2.15.0",
+    "react-native-unimodules": "~0.12.0",
     "react-native-web": "~0.13.12"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",
+    "babel-jest": "~25.2.6",
+    "jest": "~25.2.6",
+    "react-test-renderer": "~16.13.1",
     "@types/react": "~16.9.35",
     "@types/react-dom": "~16.9.8",
     "@types/react-native": "~0.63.2",
     "typescript": "~4.0.0"
   },
-  "private": true
+  "private": true,
+  "name": "MiataLights",
+  "version": "1.0.0"
 }

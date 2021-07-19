@@ -10,7 +10,6 @@ type LedState = {
     leds: Array<Array<any>>,
     history: Array<number>
 }
-
 type reducerAction = {
     index?: number,
     color?: any,
@@ -78,7 +77,6 @@ let generateLedArray = (data = null) => {
         }
         return ledArray
     }
-    
 }
 
 let sendToBluetooth  = (array : any) => {
