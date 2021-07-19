@@ -5,6 +5,7 @@ import ImageZoom from 'react-native-image-pan-zoom';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import LedPoint from "../LedPoint";
 import { ColorPicker } from 'react-native-color-picker';
+import { BleManager } from 'react-native-ble-plx';
 
 type LedState = {
     leds: Array<Array<any>>,
