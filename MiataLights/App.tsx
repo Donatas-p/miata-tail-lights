@@ -7,6 +7,7 @@ import { SingleState } from './SingleState/SingleState';
 import { NormalMode } from './NormalMode/NormalMode';
 import { Animation } from './Animation';
 import { Presets } from './Presets/Presets';
+import { BleManager } from 'react-native-ble-plx';
 
 const Stack = createStackNavigator();
 
@@ -42,7 +43,9 @@ function HomeScreen({ navigation }) {
   );
 }
 
+export const manager = new BleManager();
 console.log("App executed");
+
 function App() {
   return (
     <NavigationContainer>

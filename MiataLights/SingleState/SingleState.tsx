@@ -5,7 +5,6 @@ import ImageZoom from 'react-native-image-pan-zoom';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import LedPoint from "../LedPoint";
 import { ColorPicker } from 'react-native-color-picker';
-import { BleManager } from 'react-native-ble-plx';
 
 type LedState = {
     leds: Array<Array<any>>,
@@ -81,6 +80,11 @@ let generateLedArray = (data = null) => {
 }
 
 let sendToBluetooth  = (array : any) => {
+
+}
+
+let hexToRGB = (hex : string) => {
+
     var m = hex.match(/^#?([\da-f]{2})([\da-f]{2})([\da-f]{2})$/i);
     return {
         r: parseInt(m[1], 16), 
@@ -98,7 +102,6 @@ const storeData = async (value: Object, name: string) => {
         console.error(e);
     }
 }
-
 
 export const SingleState = ({route, navigation}) => {
     console.log(route.params)
