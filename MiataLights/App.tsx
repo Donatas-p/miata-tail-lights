@@ -5,6 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator, StackNavigationProp } from '@react-navigation/stack';
 import { SingleState } from './SingleState/SingleState';
 import { NormalMode } from './NormalMode/NormalMode';
+import { Connection } from './Bluetooth/Connection';
 import { Animation } from './Animation';
 import { Presets } from './Presets/Presets';
 
@@ -36,15 +37,18 @@ function HomeScreen({ navigation }) {
               
       <AppButton title="Presets" 
               onPress={() => navigation.navigate(Presets)} />
+              
+      <AppButton title="Connect" 
+              onPress={() => navigation.navigate(Connection)} />
+
 
       <StatusBar style="auto" />
     </SafeAreaView>
   );
 }
 
-console.log("App executed");
-
 function App() {
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -91,6 +95,17 @@ function App() {
                 fontWeight: '100',
                 }
             }} />
+        <Stack.Screen name="Connection" component={Connection}
+            options={{ 
+                title: 'Connection',
+                headerStyle: {
+                  backgroundColor: '#282828',
+                },
+                headerTintColor: '#cc241d',
+                headerTitleStyle: {
+                  fontWeight: '100',
+                }
+              }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
