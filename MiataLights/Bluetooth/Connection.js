@@ -1,5 +1,5 @@
 import React, { useState, useReducer, useEffect } from 'react';
-import { SafeAreaView, StyleSheet, View, Text, NativeModules, NativeEventEmitter, StatusBar, ScrollView, Button, FlatList, Platform, PermissionsAndroid } from 'react-native';
+import { SafeAreaView, StyleSheet, View, Text, NativeModules, NativeEventEmitter, StatusBar, ScrollView, Button, FlatList, Platform, PermissionsAndroid, TouchableHighlight } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import BleManager from 'react-native-ble-manager';
 
